@@ -1,0 +1,20 @@
+{
+  "phpExtensions": [
+    "ctype",
+    "curl",
+    "dom",
+    "fileinfo",
+    "filter",
+    "gd",
+    "hash",
+    "mbstring",
+    "openssl",
+    "pcntl",
+    "pcre",
+    "pdo",
+    "pdo_pgsql",
+    "session",
+    "tokenizer",
+    "xml"
+  ]
+}

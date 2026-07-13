@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-ink font-sans antialiased;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 15% -10%, rgba(37, 99, 235, 0.06), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 5%, rgba(16, 185, 129, 0.05), transparent);
+    background-attachment: fixed;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer components {
+  /* Signature glass surface used across owner dashboard and public menu cards */
+  .glass-surface {
+    @apply bg-white/80 backdrop-blur-glass border border-white/60 shadow-glass;
+  }
+
+  .glass-surface-strong {
+    @apply bg-white/95 backdrop-blur-glass border border-white/80 shadow-glass-lg;
+  }
+
+  /* Shimmer skeleton */
+  .skeleton {
+    @apply relative overflow-hidden bg-border/60 rounded-card;
+  }
+
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.7),
+      transparent
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2.2s linear infinite;
+  }
+
+  /*
+   * Signature "scan-frame" corners — a nod to the QR viewfinder that sits at the
+   * heart of the product, used on primary/featured cards (QR codes, active order,
+   * scan-to-order prompts) regardless of what kind of venue is using MENZO QR.
+   */
+  .scan-frame {
+    position: relative;
+  }
+
+  .scan-frame::before,
+  .scan-frame::after,
+  .scan-frame > .scan-frame-corner-tr,
+  .scan-frame > .scan-frame-corner-bl {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-color: theme("colors.accent.DEFAULT");
+  }
+
+  .scan-frame::before {
+    top: 10px;
+    left: 10px;
+    border-top: 2.5px solid;
+    border-left: 2.5px solid;
+    border-radius: 6px 0 0 0;
+  }
+
+  .scan-frame::after {
+    bottom: 10px;
+    right: 10px;
+    border-bottom: 2.5px solid;
+    border-right: 2.5px solid;
+    border-radius: 0 0 6px 0;
+  }
+
+  /* Live status pulse — used for "new order" / "connected" indicators */
+  .status-pulse {
+    @apply relative inline-flex h-2.5 w-2.5 rounded-full bg-success;
+  }
+
+  .status-pulse::after {
+    content: "";
+    @apply absolute inset-0 rounded-full;
+    animation: pulse-ring 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}

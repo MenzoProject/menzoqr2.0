@@ -1,0 +1,15 @@
+/vendor
+/node_modules
+/public/storage
+/public/hot
+/storage/*.key
+/storage/pail
+.env
+.env.*
+!.env.example
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+.DS_Store
+docker-compose.override.yml

@@ -18,17 +18,17 @@ return [
     |--------------------------------------------------------------------------
     |
     | The "public" disk is used throughout the app (dish photos, cafe logos,
-    | generated QR code images — see storage()->disk("public") calls in
+    | generated QR code images -- see storage()->disk("public") calls in
     | DishController, SettingsController, QrCodeService).
     |
-    | ⚠️ PRODUCTION ON RAILWAY: Railway's filesystem is EPHEMERAL for regular
-    | web services — anything written to storage/app/public disappears on
-    | every redeploy/restart unless you either:
+    | IMPORTANT - PRODUCTION ON RAILWAY: Railway's filesystem is EPHEMERAL for
+    | regular web services -- anything written to storage/app/public
+    | disappears on every redeploy/restart unless you either:
     |   (a) attach a Railway Volume mounted at the app's storage/app/public
-    |       directory (Settings → Volumes → mount path e.g. /app/storage/app/public), or
-    |   (b) set FILESYSTEM_DISK=s3 and fill in the AWS_*/S3-compatible env
-    |       vars below (Cloudflare R2, Backblaze B2, etc. all work, since
-    |       they speak the S3 API) — the 's3' disk is already wired up.
+    |       directory (Settings -> Volumes -> mount path e.g. /app/storage/app/public), or
+    |   (b) set FILESYSTEM_DISK=s3 and fill in the AWS-prefixed / S3-compatible
+    |       env vars below (Cloudflare R2, Backblaze B2, etc. all work, since
+    |       they speak the S3 API) -- the 's3' disk is already wired up.
     | Without one of these, dish/QR images will appear to work right after
     | upload and then vanish the next time the backend redeploys.
     |

@@ -30,6 +30,13 @@ class Cafe extends Model
     {
         return [
             "is_active" => "boolean",
+            // See comment above: without this, `$cafe->owner_id === $user->id`
+            // (used throughout CafePolicy, DishPolicy, OrderPolicy,
+            // EnsureCafeOwnership) silently and permanently fails on
+            // PostgreSQL, because owner_id comes back as a string while
+            // $user->id is auto-cast to int by Eloquent's primary-key
+            // handling.
+            "owner_id" => "integer",
         ];
     }
 

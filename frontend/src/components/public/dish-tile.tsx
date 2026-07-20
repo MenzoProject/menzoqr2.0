@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Plus, UtensilsCrossed } from "lucide-react";
@@ -23,6 +24,8 @@ interface DishTileProps {
 
 export function DishTile({ dish, currency, index, onOpen }: DishTileProps) {
   const isOutOfStock = !dish.is_available;
+  const [imageFailed, setImageFailed] = React.useState(false);
+  const showImage = Boolean(dish.image_url) && !imageFailed;
 
   return (
     <motion.button
@@ -40,14 +43,15 @@ export function DishTile({ dish, currency, index, onOpen }: DishTileProps) {
       )}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-background">
-        {dish.image_url ? (
+        {showImage ? (
           <Image
-            src={dish.image_url}
+            src={dish.image_url!}
             alt={dish.name}
             fill
-            sizes="(max-width: 640px) 50vw, 170px"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 220px"
             loading="lazy"
             className="object-cover"
+            onError={() => setImageFailed(true)}
           />
         ) : (
           <div className="flex h-full items-center justify-center">

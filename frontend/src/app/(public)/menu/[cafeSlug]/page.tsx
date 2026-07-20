@@ -84,14 +84,16 @@ function MenuContent({ cafeSlug }: { cafeSlug: string }) {
       <MenuHeader cafe={cafe} />
 
       <div className="sticky top-[65px] z-20 border-b border-border/70 bg-background/95 backdrop-blur-glass">
-        <CategoryNav
-          categories={visibleCategories.map((c) => ({ id: c.id, name: c.name }))}
-          activeCategoryId={activeCategoryId}
-          onSelect={scrollToCategory}
-        />
+        <div className="mx-auto max-w-lg sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
+          <CategoryNav
+            categories={visibleCategories.map((c) => ({ id: c.id, name: c.name }))}
+            activeCategoryId={activeCategoryId}
+            onSelect={scrollToCategory}
+          />
+        </div>
       </div>
 
-      <main className="mx-auto max-w-lg px-4 pb-32 pt-2">
+      <main className="mx-auto max-w-lg px-4 pb-32 pt-2 sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
         {visibleCategories.length === 0 && (
           <div className="py-16">
             <EmptyState icon={Store} title="Меню пока пусто" description="Загляните позже — заведение обновляет меню." />
@@ -108,7 +110,7 @@ function MenuContent({ cafeSlug }: { cafeSlug: string }) {
             className="scroll-mt-[130px] py-5"
           >
             <h2 className="mb-3 font-display text-lg font-semibold text-ink">{category.name}</h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {category.dishes
                 .filter((dish) => dish.is_active)
                 .map((dish, index) => (

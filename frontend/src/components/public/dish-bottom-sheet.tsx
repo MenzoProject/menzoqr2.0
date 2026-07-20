@@ -31,6 +31,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
   const [addonIds, setAddonIds] = React.useState<number[]>([]);
   const [quantity, setQuantity] = React.useState(1);
   const [comment, setComment] = React.useState("");
+  const [imageFailed, setImageFailed] = React.useState(false);
 
   React.useEffect(() => {
     if (dish) {
@@ -39,6 +40,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
       setAddonIds([]);
       setQuantity(1);
       setComment("");
+      setImageFailed(false);
     }
   }, [dish]);
 
@@ -79,13 +81,14 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
       {displayedDish && (
         <>
           <div className="relative -mx-5 -mt-1 mb-4 aspect-[16/10] w-[calc(100%+40px)] overflow-hidden bg-background">
-            {displayedDish.image_url ? (
+            {displayedDish.image_url && !imageFailed ? (
               <Image
                 src={displayedDish.image_url}
                 alt={displayedDish.name}
                 fill
                 sizes="480px"
                 className="object-cover"
+                onError={() => setImageFailed(true)}
               />
             ) : (
               <div className="flex h-full items-center justify-center">
@@ -197,4 +200,4 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
       )}
     </BottomSheet>
   );
-}
+                }

@@ -12,6 +12,7 @@ import { useOrders, useUpdateOrderStatus } from "@/hooks/use-orders";
 import { OrderCard } from "@/components/orders/order-card";
 import { useToast } from "@/providers/toast-provider";
 import { extractApiErrorMessage } from "@/lib/api/client";
+import { cn } from "@/lib/utils";
 import type { Order, OrderStatus } from "@/types/order";
 
 const BOARD_COLUMNS: { status: OrderStatus; label: string }[] = [
@@ -30,6 +31,7 @@ export default function OrdersPage() {
   const { toast } = useToast();
   const [cancelTarget, setCancelTarget] = React.useState<Order | null>(null);
   const [pendingOrderId, setPendingOrderId] = React.useState<number | null>(null);
+  const [activeStatus, setActiveStatus] = React.useState<OrderStatus>("new");
 
   const currency = cafe?.currency ?? "RUB";
   const orders = data?.data ?? [];
@@ -75,34 +77,66 @@ export default function OrdersPage() {
       )}
 
       {!isLoading && orders.length > 0 && (
-        <div className="flex gap-4 overflow-x-auto pb-4">
-          {BOARD_COLUMNS.map((column) => {
-            const columnOrders = orders.filter((order) => order.status === column.status);
+        <div>
+          <div className="mb-4 flex flex-wrap gap-2 overflow-x-auto pb-1">
+            {BOARD_COLUMNS.map((column) => {
+              const count = orders.filter((order) => order.status === column.status).length;
+              const isActive = activeStatus === column.status;
+
+              return (
+                <button
+                  key={column.status}
+                  type="button"
+                  onClick={() => setActiveStatus(column.status)}
+                  className={cn(
+                    "flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors",
+                    isActive
+                      ? "bg-accent text-white"
+                      : "bg-ink/6 text-muted hover:bg-ink/10"
+                  )}
+                >
+                  {column.label}
+                  <span
+                    className={cn(
+                      "rounded-full px-2 py-0.5 text-xs",
+                      isActive ? "bg-white/20 text-white" : "bg-white text-muted"
+                    )}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {(() => {
+            const columnOrders = orders.filter((order) => order.status === activeStatus);
+
+            if (columnOrders.length === 0) {
+              return (
+                <EmptyState
+                  icon={ClipboardList}
+                  title="Здесь пока пусто"
+                  description="Заказы с этим статусом появятся тут автоматически."
+                />
+              );
+            }
 
             return (
-              <div key={column.status} className="flex w-[280px] shrink-0 flex-col gap-3">
-                <div className="flex items-center justify-between px-1">
-                  <h3 className="text-sm font-semibold text-ink">{column.label}</h3>
-                  <span className="rounded-full bg-ink/6 px-2 py-0.5 text-xs text-muted">
-                    {columnOrders.length}
-                  </span>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  {columnOrders.map((order) => (
-                    <OrderCard
-                      key={order.id}
-                      order={order}
-                      currency={currency}
-                      isUpdating={pendingOrderId === order.id}
-                      onAdvance={(status) => handleAdvance(order, status)}
-                      onCancel={() => setCancelTarget(order)}
-                    />
-                  ))}
-                </div>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {columnOrders.map((order) => (
+                  <OrderCard
+                    key={order.id}
+                    order={order}
+                    currency={currency}
+                    isUpdating={pendingOrderId === order.id}
+                    onAdvance={(status) => handleAdvance(order, status)}
+                    onCancel={() => setCancelTarget(order)}
+                  />
+                ))}
               </div>
             );
-          })}
+          })()}
         </div>
       )}
 

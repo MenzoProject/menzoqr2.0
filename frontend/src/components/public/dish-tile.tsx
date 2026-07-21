@@ -8,11 +8,11 @@ import { cn } from "@/lib/utils";
 import type { Dish } from "@/types/menu";
 
 const TAG_STYLES: Record<string, string> = {
-  new: "bg-accent/10 text-accent",
-  hit: "bg-warning/10 text-warning",
+  new: "bg-success/15 text-success",
+  hit: "bg-danger/10 text-danger",
   spicy: "bg-danger/10 text-danger",
-  halal: "bg-success/10 text-success",
-  vegetarian: "bg-success/10 text-success",
+  halal: "bg-success/15 text-success",
+  vegetarian: "bg-success/15 text-success",
 };
 
 interface DishTileProps {
@@ -42,7 +42,7 @@ export function DishTile({ dish, currency, index, onOpen }: DishTileProps) {
         isOutOfStock && "opacity-60"
       )}
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-background">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-cream-dark">
         {showImage ? (
           <Image
             src={dish.image_url!}
@@ -55,7 +55,7 @@ export function DishTile({ dish, currency, index, onOpen }: DishTileProps) {
           />
         ) : (
           <div className="flex h-full items-center justify-center">
-            <UtensilsCrossed className="h-8 w-8 text-muted" />
+            <UtensilsCrossed className="h-8 w-8 text-gold-dark/60" />
           </div>
         )}
 
@@ -77,23 +77,23 @@ export function DishTile({ dish, currency, index, onOpen }: DishTileProps) {
 
         {isOutOfStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/70">
-            <span className="rounded-full bg-ink/85 px-3 py-1 text-xs font-semibold text-white">
+            <span className="rounded-full bg-cocoa/85 px-3 py-1 text-xs font-semibold text-white">
               Нет в наличии
             </span>
           </div>
         )}
 
         {!isOutOfStock && (
-          <span className="absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-full bg-white text-accent shadow-soft">
+          <span className="absolute bottom-2 right-2 flex h-9 w-9 items-center justify-center rounded-full bg-gold text-white shadow-soft">
             <Plus className="h-4 w-4" />
           </span>
         )}
       </div>
 
       <div className="flex flex-1 flex-col gap-1 p-3.5">
-        <h3 className="line-clamp-1 font-medium text-ink">{dish.name}</h3>
+        <h3 className="line-clamp-1 font-medium text-cocoa">{dish.name}</h3>
         {dish.description && <p className="line-clamp-2 text-xs text-muted">{dish.description}</p>}
-        <span className="mt-1 font-mono text-sm font-semibold text-ink">
+        <span className="mt-1 font-mono text-sm font-semibold text-cocoa">
           {dish.price} {currency}
         </span>
       </div>

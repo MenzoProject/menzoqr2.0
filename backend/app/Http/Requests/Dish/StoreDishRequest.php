@@ -25,6 +25,7 @@ final class StoreDishRequest extends FormRequest
             "sort_order" => ["nullable", "integer", "min:0"],
             "is_active" => ["nullable", "boolean"],
             "is_available" => ["nullable", "boolean"],
+            "is_popular" => ["nullable", "boolean"],
             "tags" => ["nullable", "array"],
             "tags.*" => [Rule::in(array_map(fn (DishTag $tag) => $tag->value, DishTag::cases()))],
             "variants" => ["nullable", "array"],

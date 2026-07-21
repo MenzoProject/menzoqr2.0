@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Owner\BannerController;
 use App\Http\Controllers\Api\Owner\CafeController;
 use App\Http\Controllers\Api\Owner\CategoryController;
+use App\Http\Controllers\Api\Owner\ComboOfferController;
 use App\Http\Controllers\Api\Owner\DishController;
 use App\Http\Controllers\Api\Owner\OrderController;
 use App\Http\Controllers\Api\Owner\QrCodeController;
@@ -45,6 +47,16 @@ Route::prefix("v1")->group(function () {
                 Route::get("qr-codes", [QrCodeController::class, "index"]);
                 Route::post("qr-codes", [QrCodeController::class, "store"]);
                 Route::delete("qr-codes/{qrCode}", [QrCodeController::class, "destroy"]);
+
+                Route::get("banners", [BannerController::class, "index"]);
+                Route::post("banners", [BannerController::class, "store"]);
+                Route::patch("banners/{banner}", [BannerController::class, "update"]);
+                Route::delete("banners/{banner}", [BannerController::class, "destroy"]);
+
+                Route::get("combo-offers", [ComboOfferController::class, "index"]);
+                Route::post("combo-offers", [ComboOfferController::class, "store"]);
+                Route::patch("combo-offers/{comboOffer}", [ComboOfferController::class, "update"]);
+                Route::delete("combo-offers/{comboOffer}", [ComboOfferController::class, "destroy"]);
 
                 Route::get("orders", [OrderController::class, "index"]);
                 Route::get("orders/{order}", [OrderController::class, "show"]);

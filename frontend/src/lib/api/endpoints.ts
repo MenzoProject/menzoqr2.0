@@ -18,6 +18,12 @@ export const endpoints = {
     qrCodes: (cafeId: number | string) => `/owner/cafes/${cafeId}/qr-codes`,
     qrCode: (cafeId: number | string, qrCodeId: number | string) =>
       `/owner/cafes/${cafeId}/qr-codes/${qrCodeId}`,
+    banners: (cafeId: number | string) => `/owner/cafes/${cafeId}/banners`,
+    banner: (cafeId: number | string, bannerId: number | string) =>
+      `/owner/cafes/${cafeId}/banners/${bannerId}`,
+    comboOffers: (cafeId: number | string) => `/owner/cafes/${cafeId}/combo-offers`,
+    comboOffer: (cafeId: number | string, comboOfferId: number | string) =>
+      `/owner/cafes/${cafeId}/combo-offers/${comboOfferId}`,
     orders: (cafeId: number | string) => `/owner/cafes/${cafeId}/orders`,
     order: (cafeId: number | string, orderId: number | string) => `/owner/cafes/${cafeId}/orders/${orderId}`,
     orderStatus: (cafeId: number | string, orderId: number | string) =>

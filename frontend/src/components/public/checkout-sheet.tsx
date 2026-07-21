@@ -87,9 +87,9 @@ export function CheckoutSheet({
     <BottomSheet open={open} onOpenChange={onOpenChange} title="Оформление заказа" className="pb-4">
       <div className="flex flex-col gap-5 pt-1">
         <div>
-          <h2 className="font-display text-lg font-semibold text-ink">Оформление заказа</h2>
+          <h2 className="font-serif text-lg font-semibold text-cocoa">Оформление заказа</h2>
           <div className="mt-1.5 flex items-center gap-2">
-            <Badge variant={orderType === "table" ? "accent" : "default"}>
+            <Badge variant={orderType === "table" ? "gold" : "default"}>
               {orderType === "table" ? `Стол ${tableNumber ?? ""}` : "Самовывоз"}
             </Badge>
             <span className="font-mono text-sm text-muted">
@@ -129,7 +129,7 @@ export function CheckoutSheet({
             <Textarea id="checkout-comment" rows={2} {...register("comment")} />
           </div>
 
-          <Button type="submit" size="lg" disabled={createOrder.isPending} className="mt-1 w-full">
+          <Button type="submit" variant="gold" size="lg" disabled={createOrder.isPending} className="mt-1 w-full">
             {createOrder.isPending && <Loader2 className="h-4 w-4 animate-spin" />}
             Оформить · {subtotal.toFixed(0)} {currency}
           </Button>

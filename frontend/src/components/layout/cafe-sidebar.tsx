@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ArrowLeft,
+  LayoutDashboard,
   UtensilsCrossed,
   QrCode,
   ClipboardList,
@@ -21,6 +22,7 @@ interface CafeSidebarProps {
 }
 
 const navItems = (cafeId: string) => [
+  { href: `/cafes/${cafeId}/home-content`, label: "Главная", icon: LayoutDashboard },
   { href: `/cafes/${cafeId}/menu`, label: "Меню", icon: UtensilsCrossed },
   { href: `/cafes/${cafeId}/qr-codes`, label: "QR-коды", icon: QrCode },
   { href: `/cafes/${cafeId}/orders`, label: "Заказы", icon: ClipboardList },

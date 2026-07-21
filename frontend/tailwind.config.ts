@@ -28,11 +28,25 @@ const config: Config = {
           DEFAULT: "#EF4444",
           light: "#F87171",
         },
+        // Warm "restaurant" palette used only by the public-facing guest menu
+        // (home / catalog / cart / about), scoped via the (public) layout so
+        // the owner dashboard keeps its existing blue/slate theme.
+        cream: {
+          DEFAULT: "#FBF6EE",
+          dark: "#F3EADA",
+        },
+        gold: {
+          DEFAULT: "#C08A2E",
+          light: "#D9A94E",
+          dark: "#9C6F1E",
+        },
+        cocoa: "#3B2A1A",
       },
       fontFamily: {
         display: ["var(--font-inter)", "sans-serif"],
         sans: ["var(--font-inter)", "sans-serif"],
         mono: ["var(--font-mono)", "monospace"],
+        serif: ["var(--font-playfair)", "Georgia", "serif"],
       },
       borderRadius: {
         card: "20px",

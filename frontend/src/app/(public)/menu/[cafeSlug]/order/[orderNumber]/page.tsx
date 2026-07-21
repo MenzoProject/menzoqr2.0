@@ -46,7 +46,7 @@ export default function OrderStatusPage() {
         >
           <div>
             <p className="text-sm text-muted">Заказ</p>
-            <h1 className="font-mono text-2xl font-semibold text-ink">{order.order_number}</h1>
+            <h1 className="font-mono text-2xl font-semibold text-cocoa">{order.order_number}</h1>
           </div>
 
           <Card>

@@ -56,6 +56,7 @@ export function DishFormDialog({ cafeId, categoryId, open, onOpenChange, dish }:
       price: 0,
       is_active: true,
       is_available: true,
+      is_popular: false,
       tags: [],
       variants: [],
       addons: [],
@@ -74,6 +75,7 @@ export function DishFormDialog({ cafeId, categoryId, open, onOpenChange, dish }:
         price: dish?.price ?? 0,
         is_active: dish?.is_active ?? true,
         is_available: dish?.is_available ?? true,
+        is_popular: dish?.is_popular ?? false,
         tags: dish?.tags.map((t) => t.value) ?? [],
         variants: dish?.variants.map((v) => ({ id: v.id, name: v.name, price_modifier: v.price_modifier })) ?? [],
         addons: dish?.addons.map((a) => ({ id: a.id, name: a.name, price: a.price })) ?? [],
@@ -171,6 +173,18 @@ export function DishFormDialog({ cafeId, categoryId, open, onOpenChange, dish }:
               id="dish-available"
               checked={watch("is_available")}
               onCheckedChange={(checked) => setValue("is_available", checked)}
+            />
+          </div>
+
+          <div className="flex items-center justify-between rounded-card border border-border px-4 py-3">
+            <div className="flex flex-col">
+              <Label htmlFor="dish-popular">Популярное блюдо</Label>
+              <span className="text-xs text-muted">Появится в блоке «Популярные блюда» на главной странице меню</span>
+            </div>
+            <Switch
+              id="dish-popular"
+              checked={watch("is_popular")}
+              onCheckedChange={(checked) => setValue("is_popular", checked)}
             />
           </div>
 

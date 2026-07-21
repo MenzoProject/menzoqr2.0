@@ -1,4 +1,6 @@
 import type { Category } from "@/types/menu";
+import type { Banner } from "@/types/banner";
+import type { ComboOffer } from "@/types/combo-offer";
 
 export interface PublicCafe {
   name: string;
@@ -8,4 +10,6 @@ export interface PublicCafe {
   phone: string | null;
   currency: string;
   categories: Category[];
+  banners: Banner[];
+  combo_offers: ComboOffer[];
 }

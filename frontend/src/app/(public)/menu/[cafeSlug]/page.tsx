@@ -1,21 +1,25 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
-import { Store } from "lucide-react";import { usePublicMenu } from "@/hooks/use-public-menu";
+import { Store, Utensils, ShoppingBag, ChevronRight, Flame, UtensilsCrossed } from "lucide-react";
+import { usePublicMenu } from "@/hooks/use-public-menu";
 import { CartProvider } from "@/providers/cart-provider";
-import { MenuHeader } from "@/components/public/menu-header";
-import { MenuSkeleton } from "@/components/public/menu-skeleton";
-import { CategoryNav } from "@/components/public/category-nav";
+import { HeroBanner } from "@/components/public/hero-banner";
+import { ComboOfferCard } from "@/components/public/combo-offer-card";
 import { DishTile } from "@/components/public/dish-tile";
 import { DishBottomSheet } from "@/components/public/dish-bottom-sheet";
 import { CartBar } from "@/components/public/cart-bar";
 import { CartSheet } from "@/components/public/cart-sheet";
 import { CheckoutSheet } from "@/components/public/checkout-sheet";
+import { PublicBottomNav } from "@/components/public/public-bottom-nav";
+import { MenuSkeleton } from "@/components/public/menu-skeleton";
 import { EmptyState } from "@/components/shared/empty-state";
 import type { Dish } from "@/types/menu";
 
-function MenuContent({ cafeSlug }: { cafeSlug: string }) {
+function HomeContent({ cafeSlug }: { cafeSlug: string }) {
   const searchParams = useSearchParams();
   const { data: cafe, isLoading, isError } = usePublicMenu(cafeSlug);
 
@@ -24,50 +28,12 @@ function MenuContent({ cafeSlug }: { cafeSlug: string }) {
   const orderType = tableIdParam ? "table" : "takeaway";
   const tableId = tableIdParam ? Number(tableIdParam) : null;
 
-  const visibleCategories = React.useMemo(
-    () => cafe?.categories.filter((c) => c.is_active && c.dishes.some((d) => d.is_active)) ?? [],
-    [cafe]
-  );
-
-  const [activeCategoryId, setActiveCategoryId] = React.useState<number | null>(null);
   const [selectedDish, setSelectedDish] = React.useState<Dish | null>(null);
   const [cartOpen, setCartOpen] = React.useState(false);
   const [checkoutOpen, setCheckoutOpen] = React.useState(false);
 
-  const sectionRefs = React.useRef<Map<number, HTMLElement>>(new Map());
-
-  React.useEffect(() => {
-    if (visibleCategories.length > 0 && activeCategoryId === null) {
-      setActiveCategoryId(visibleCategories[0]!.id);
-    }
-  }, [visibleCategories, activeCategoryId]);
-
-  React.useEffect(() => {
-    if (visibleCategories.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-
-        if (visible[0]) {
-          const id = Number(visible[0].target.getAttribute("data-category-id"));
-          setActiveCategoryId(id);
-        }
-      },
-      { rootMargin: "-140px 0px -60% 0px", threshold: 0 }
-    );
-
-    sectionRefs.current.forEach((node) => observer.observe(node));
-
-    return () => observer.disconnect();
-  }, [visibleCategories]);
-
-  const scrollToCategory = (id: number) => {
-    const node = sectionRefs.current.get(id);
-    node?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
+  const query = searchParams.toString();
+  const catalogHref = `/menu/${cafeSlug}/catalog${query ? `?${query}` : ""}`;
 
   if (isLoading) return <MenuSkeleton />;
 
@@ -79,55 +45,127 @@ function MenuContent({ cafeSlug }: { cafeSlug: string }) {
     );
   }
 
+  const visibleCategories = cafe.categories.filter((c) => c.is_active && c.dishes.some((d) => d.is_active));
+  const popularDishes = visibleCategories
+    .flatMap((c) => c.dishes)
+    .filter((d) => d.is_active && d.is_popular)
+    .slice(0, 10);
+  const activeCombo = cafe.combo_offers.find((c) => c.is_active) ?? null;
+
   return (
-    <CartProvider cafeSlug={cafeSlug}>
-      <MenuHeader cafe={cafe} />
-
-      <div className="sticky top-[65px] z-20 border-b border-border/70 bg-background/95 backdrop-blur-glass">
-        <div className="mx-auto max-w-lg sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
-          <CategoryNav
-            categories={visibleCategories.map((c) => ({ id: c.id, name: c.name }))}
-            activeCategoryId={activeCategoryId}
-            onSelect={scrollToCategory}
-          />
-        </div>
-      </div>
-
-      <main className="mx-auto max-w-lg px-4 pb-32 pt-2 sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
-        {visibleCategories.length === 0 && (
-          <div className="py-16">
-            <EmptyState icon={Store} title="Меню пока пусто" description="Загляните позже — заведение обновляет меню." />
+    <>
+      <header className="sticky top-0 z-30 border-b border-gold/15 bg-cream/90 px-4 py-3 backdrop-blur-glass">
+        <div className="mx-auto flex max-w-lg items-center gap-3 sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-card bg-cream-dark">
+            {cafe.logo_url ? (
+              <Image src={cafe.logo_url} alt={cafe.name} width={44} height={44} className="h-full w-full object-cover" />
+            ) : (
+              <Store className="h-5 w-5 text-gold-dark" />
+            )}
           </div>
-        )}
+          <div className="min-w-0 flex-1">
+            <h1 className="truncate font-serif text-base font-semibold text-cocoa">{cafe.name}</h1>
+            {cafe.address && <p className="truncate text-xs text-muted">{cafe.address}</p>}
+          </div>
+        </div>
+      </header>
 
-        {visibleCategories.map((category) => (
-          <section
-            key={category.id}
-            data-category-id={category.id}
-            ref={(node) => {
-              if (node) sectionRefs.current.set(category.id, node);
-            }}
-            className="scroll-mt-[130px] py-5"
+      <main className="mx-auto max-w-lg pb-28 sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl">
+        <HeroBanner cafe={cafe} banners={cafe.banners} />
+
+        <div className="mt-4 grid grid-cols-2 gap-3 px-4">
+          <Link
+            href={catalogHref}
+            className="flex items-center gap-3 rounded-card-lg bg-gold px-4 py-3.5 text-white shadow-soft transition active:scale-[0.98]"
           >
-            <h2 className="mb-3 font-display text-lg font-semibold text-ink">{category.name}</h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-              {category.dishes
-                .filter((dish) => dish.is_active)
-                .map((dish, index) => (
-                  <DishTile
-                    key={dish.id}
-                    dish={dish}
-                    currency={cafe.currency}
-                    index={index}
-                    onOpen={() => setSelectedDish(dish)}
-                  />
-                ))}
+            <Utensils className="h-5 w-5 shrink-0" />
+            <span className="flex flex-col text-left leading-tight">
+              <span className="text-sm font-semibold">Заказать за столом</span>
+              <span className="text-xs text-white/80">Принесём к вашему столу</span>
+            </span>
+          </Link>
+          <Link
+            href={catalogHref}
+            className="flex items-center gap-3 rounded-card-lg border border-gold/25 bg-white px-4 py-3.5 text-cocoa shadow-soft transition active:scale-[0.98]"
+          >
+            <ShoppingBag className="h-5 w-5 shrink-0 text-gold-dark" />
+            <span className="flex flex-col text-left leading-tight">
+              <span className="text-sm font-semibold">Самовывоз</span>
+              <span className="text-xs text-muted">Заберите заказ сами</span>
+            </span>
+          </Link>
+        </div>
+
+        {visibleCategories.length > 0 && (
+          <section className="mt-6">
+            <div className="flex items-center justify-between px-4">
+              <h2 className="font-serif text-lg font-semibold text-cocoa">Категории</h2>
+              <Link href={catalogHref} className="flex items-center gap-0.5 text-sm font-medium text-gold-dark">
+                Все категории
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="mt-3 flex gap-3 overflow-x-auto px-4 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {visibleCategories.map((category) => {
+                const thumb = category.dishes.find((d) => d.image_url)?.image_url ?? null;
+
+                return (
+                  <Link
+                    key={category.id}
+                    href={`${catalogHref}${query ? "&" : "?"}category=${category.id}`}
+                    className="flex w-[110px] shrink-0 flex-col items-center gap-2 rounded-card-lg border border-gold/15 bg-white p-3 text-center shadow-soft"
+                  >
+                    <div className="relative h-14 w-14 overflow-hidden rounded-full bg-cream-dark">
+                      {thumb ? (
+                        <Image src={thumb} alt={category.name} fill className="object-cover" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <UtensilsCrossed className="h-5 w-5 text-gold-dark/60" />
+                        </div>
+                      )}
+                    </div>
+                    <span className="line-clamp-2 text-xs font-medium leading-tight text-cocoa">{category.name}</span>
+                  </Link>
+                );
+              })}
             </div>
           </section>
-        ))}
+        )}
+
+        {popularDishes.length > 0 && (
+          <section className="mt-6">
+            <div className="flex items-center justify-between px-4">
+              <h2 className="flex items-center gap-1.5 font-serif text-lg font-semibold text-cocoa">
+                <Flame className="h-5 w-5 text-gold" />
+                Популярные блюда
+              </h2>
+              <Link href={catalogHref} className="flex items-center gap-0.5 text-sm font-medium text-gold-dark">
+                Смотреть все
+                <ChevronRight className="h-4 w-4" />
+              </Link>
+            </div>
+
+            <div className="mt-3 flex gap-3 overflow-x-auto px-4 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {popularDishes.map((dish, index) => (
+                <div key={dish.id} className="w-[160px] shrink-0">
+                  <DishTile dish={dish} currency={cafe.currency} index={index} onOpen={() => setSelectedDish(dish)} />
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {activeCombo && (
+          <section className="mt-6">
+            <ComboOfferCard combo={activeCombo} currency={cafe.currency} />
+          </section>
+        )}
       </main>
 
       <CartBar currency={cafe.currency} onOpen={() => setCartOpen(true)} />
+
+      <PublicBottomNav cafeSlug={cafeSlug} active="home" onCartClick={() => setCartOpen(true)} />
 
       <DishBottomSheet dish={selectedDish} currency={cafe.currency} onOpenChange={(open) => !open && setSelectedDish(null)} />
 
@@ -150,15 +188,18 @@ function MenuContent({ cafeSlug }: { cafeSlug: string }) {
         tableId={tableId}
         tableNumber={tableNumberParam}
       />
-    </CartProvider>
+    </>
   );
 }
 
-export default function PublicMenuPage() {
+export default function PublicHomePage() {
   const params = useParams<{ cafeSlug: string }>();
+
   return (
     <React.Suspense fallback={<MenuSkeleton />}>
-      <MenuContent cafeSlug={params.cafeSlug} />
+      <CartProvider cafeSlug={params.cafeSlug}>
+        <HomeContent cafeSlug={params.cafeSlug} />
+      </CartProvider>
     </React.Suspense>
   );
 }

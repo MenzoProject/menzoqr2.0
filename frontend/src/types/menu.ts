@@ -27,6 +27,7 @@ export interface Dish {
   image_url: string | null;
   is_active: boolean;
   is_available: boolean;
+  is_popular: boolean;
   tags: DishTag[];
   variants: DishVariant[];
   addons: DishAddon[];

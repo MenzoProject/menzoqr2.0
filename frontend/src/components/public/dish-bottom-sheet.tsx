@@ -80,7 +80,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
     <BottomSheet open={isOpen} onOpenChange={onOpenChange} title={displayedDish?.name ?? "Блюдо"} className="pb-4">
       {displayedDish && (
         <>
-          <div className="relative -mx-5 -mt-1 mb-4 aspect-[16/10] w-[calc(100%+40px)] overflow-hidden bg-background">
+          <div className="relative -mx-5 -mt-1 mb-4 aspect-[16/10] w-[calc(100%+40px)] overflow-hidden bg-cream-dark">
             {displayedDish.image_url && !imageFailed ? (
               <Image
                 src={displayedDish.image_url}
@@ -92,7 +92,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
               />
             ) : (
               <div className="flex h-full items-center justify-center">
-                <UtensilsCrossed className="h-10 w-10 text-muted" />
+                <UtensilsCrossed className="h-10 w-10 text-gold-dark/60" />
               </div>
             )}
           </div>
@@ -101,18 +101,18 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
             <div>
               <div className="flex flex-wrap items-center gap-1.5">
                 {displayedDish.tags.map((tag) => (
-                  <Badge key={tag.value} variant="accent">
+                  <Badge key={tag.value} variant="gold">
                     {tag.label}
                   </Badge>
                 ))}
               </div>
-              <h2 className="mt-1.5 font-display text-xl font-semibold text-ink">{displayedDish.name}</h2>
+              <h2 className="mt-1.5 font-serif text-xl font-semibold text-cocoa">{displayedDish.name}</h2>
               {displayedDish.description && <p className="mt-1 text-sm text-muted">{displayedDish.description}</p>}
             </div>
 
             {displayedDish.variants.length > 0 && (
               <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-ink">Вариант</span>
+                <span className="text-sm font-medium text-cocoa">Вариант</span>
                 <div className="flex flex-wrap gap-2">
                   {displayedDish.variants.map((variant) => {
                     const isSelected = variant.id === variantId;
@@ -124,7 +124,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
                         className={cn(
                           "min-h-[44px] rounded-card border px-4 text-sm font-medium transition-colors",
                           isSelected
-                            ? "border-accent bg-accent/8 text-accent"
+                            ? "border-gold bg-gold/8 text-gold-dark"
                             : "border-border text-ink hover:bg-ink/5"
                         )}
                       >
@@ -144,7 +144,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
 
             {displayedDish.addons.length > 0 && (
               <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-ink">Дополнения</span>
+                <span className="text-sm font-medium text-cocoa">Дополнения</span>
                 <div className="flex flex-col gap-2">
                   {displayedDish.addons.map((addon) => {
                     const isSelected = addonIds.includes(addon.id);
@@ -155,7 +155,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
                         onClick={() => toggleAddon(addon.id)}
                         className={cn(
                           "flex min-h-[44px] items-center justify-between rounded-card border px-4 transition-colors",
-                          isSelected ? "border-accent bg-accent/8" : "border-border hover:bg-ink/5"
+                          isSelected ? "border-gold bg-gold/8" : "border-border hover:bg-ink/5"
                         )}
                       >
                         <span className="text-sm text-ink">{addon.name}</span>
@@ -164,7 +164,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
                           <span
                             className={cn(
                               "flex h-5 w-5 items-center justify-center rounded-full border",
-                              isSelected ? "border-accent bg-accent text-white" : "border-border"
+                              isSelected ? "border-gold bg-gold text-white" : "border-border"
                             )}
                           >
                             {isSelected && <Check className="h-3 w-3" />}
@@ -178,7 +178,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
             )}
 
             <div className="flex flex-col gap-2">
-              <span className="text-sm font-medium text-ink">Комментарий</span>
+              <span className="text-sm font-medium text-cocoa">Комментарий</span>
               <Textarea
                 placeholder="Например: без лука"
                 rows={2}
@@ -191,7 +191,7 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
           <div className="sticky bottom-0 -mx-5 mt-6 flex items-center gap-3 border-t border-border bg-white px-5 pt-4">
             <QuantityStepper value={quantity} onChange={setQuantity} />
             <motion.div whileTap={{ scale: 0.97 }} className="flex-1">
-              <Button onClick={handleAdd} size="lg" className="w-full" disabled={!displayedDish.is_available}>
+              <Button onClick={handleAdd} variant="gold" size="lg" className="w-full" disabled={!displayedDish.is_available}>
                 Добавить · {total.toFixed(0)} {currency}
               </Button>
             </motion.div>
@@ -200,4 +200,4 @@ export function DishBottomSheet({ dish, currency, onOpenChange }: DishBottomShee
       )}
     </BottomSheet>
   );
-                }
+}

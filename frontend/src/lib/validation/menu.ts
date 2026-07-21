@@ -13,6 +13,7 @@ export const dishSchema = z.object({
   price: z.coerce.number({ invalid_type_error: "Введите цену" }).min(0, "Цена не может быть отрицательной"),
   is_active: z.boolean().default(true),
   is_available: z.boolean().default(true),
+  is_popular: z.boolean().default(false),
   tags: z.array(z.enum(["new", "hit", "spicy", "halal", "vegetarian"])).default([]),
 });
 

@@ -10,6 +10,7 @@ export interface DishMutationInput {
   price: number;
   is_active?: boolean;
   is_available?: boolean;
+  is_popular?: boolean;
   tags?: string[];
   image?: File | null;
   variants?: { id?: number; name: string; price_modifier: number }[];

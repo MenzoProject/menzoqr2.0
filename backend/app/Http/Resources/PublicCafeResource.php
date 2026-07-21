@@ -20,6 +20,8 @@ final class PublicCafeResource extends JsonResource
             "phone" => $this->phone,
             "currency" => $this->currency,
             "categories" => CategoryResource::collection($this->whenLoaded("categories")),
+            "banners" => BannerResource::collection($this->whenLoaded("banners")),
+            "combo_offers" => ComboOfferResource::collection($this->whenLoaded("comboOffers")),
         ];
     }
 }

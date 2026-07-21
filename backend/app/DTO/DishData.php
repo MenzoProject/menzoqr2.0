@@ -18,6 +18,7 @@ final readonly class DishData
         public int $sortOrder = 0,
         public bool $isActive = true,
         public bool $isAvailable = true,
+        public bool $isPopular = false,
         public array $tags = [],
     ) {
     }
@@ -33,6 +34,7 @@ final readonly class DishData
             sortOrder: (int) ($data["sort_order"] ?? 0),
             isActive: (bool) ($data["is_active"] ?? true),
             isAvailable: (bool) ($data["is_available"] ?? true),
+            isPopular: (bool) ($data["is_popular"] ?? false),
             tags: $data["tags"] ?? [],
         );
     }
@@ -48,6 +50,7 @@ final readonly class DishData
             "sort_order" => $this->sortOrder,
             "is_active" => $this->isActive,
             "is_available" => $this->isAvailable,
+            "is_popular" => $this->isPopular,
             "tags" => $this->tags,
         ];
     }

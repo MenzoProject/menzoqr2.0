@@ -21,6 +21,8 @@ final class PublicMenuController extends Controller
                 "categories.dishes" => fn ($query) => $query->where("is_active", true)->orderBy("sort_order"),
                 "categories.dishes.variants",
                 "categories.dishes.addons" => fn ($query) => $query->where("is_active", true),
+                "banners" => fn ($query) => $query->where("is_active", true)->orderBy("sort_order"),
+                "comboOffers" => fn ($query) => $query->where("is_active", true)->orderBy("sort_order"),
             ])
             ->firstOrFail();
 

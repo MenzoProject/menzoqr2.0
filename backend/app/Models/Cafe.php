@@ -57,6 +57,16 @@ class Cafe extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function banners(): HasMany
+    {
+        return $this->hasMany(Banner::class);
+    }
+
+    public function comboOffers(): HasMany
+    {
+        return $this->hasMany(ComboOffer::class);
+    }
+
     public function tables(): HasMany
     {
         return $this->hasMany(Table::class);

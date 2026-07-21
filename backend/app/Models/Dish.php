@@ -23,6 +23,7 @@ class Dish extends Model
         "sort_order",
         "is_active",
         "is_available",
+        "is_popular",
         "tags",
     ];
 
@@ -32,6 +33,7 @@ class Dish extends Model
             "price" => "decimal:2",
             "is_active" => "boolean",
             "is_available" => "boolean",
+            "is_popular" => "boolean",
             "tags" => "array",
         ];
     }

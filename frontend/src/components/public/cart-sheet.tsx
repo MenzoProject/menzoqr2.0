@@ -21,7 +21,7 @@ export function CartSheet({ open, onOpenChange, currency, onCheckout }: CartShee
   return (
     <BottomSheet open={open} onOpenChange={onOpenChange} title="Корзина" className="pb-4">
       <div className="flex flex-col gap-4 pt-1">
-        <h2 className="font-display text-lg font-semibold text-ink">Корзина</h2>
+        <h2 className="font-serif text-lg font-semibold text-cocoa">Корзина</h2>
 
         {items.length === 0 ? (
           <EmptyState icon={ShoppingBag} title="Корзина пуста" description="Добавьте блюда из меню, чтобы оформить заказ." />
@@ -34,7 +34,7 @@ export function CartSheet({ open, onOpenChange, currency, onCheckout }: CartShee
 
                 return (
                   <div key={item.key} className="flex gap-3 rounded-card border border-border p-3">
-                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-card bg-background">
+                    <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-card bg-cream-dark">
                       {item.dishImageUrl ? (
                         <Image
                           src={item.dishImageUrl}
@@ -44,14 +44,14 @@ export function CartSheet({ open, onOpenChange, currency, onCheckout }: CartShee
                           className="h-full w-full object-cover"
                         />
                       ) : (
-                        <UtensilsCrossed className="h-5 w-5 text-muted" />
+                        <UtensilsCrossed className="h-5 w-5 text-gold-dark/60" />
                       )}
                     </div>
 
                     <div className="flex flex-1 flex-col justify-between gap-2">
                       <div>
                         <div className="flex items-start justify-between gap-2">
-                          <p className="text-sm font-medium text-ink">{item.dishName}</p>
+                          <p className="text-sm font-medium text-cocoa">{item.dishName}</p>
                           <button
                             type="button"
                             onClick={() => removeItem(item.key)}
@@ -74,7 +74,7 @@ export function CartSheet({ open, onOpenChange, currency, onCheckout }: CartShee
                           onChange={(qty) => updateQuantity(item.key, qty)}
                           className="scale-90 origin-left"
                         />
-                        <span className="font-mono text-sm font-semibold text-ink">
+                        <span className="font-mono text-sm font-semibold text-cocoa">
                           {lineTotal.toFixed(0)} {currency}
                         </span>
                       </div>
@@ -87,11 +87,11 @@ export function CartSheet({ open, onOpenChange, currency, onCheckout }: CartShee
             <div className="sticky bottom-0 -mx-5 flex flex-col gap-3 border-t border-border bg-white px-5 pt-4">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted">Итого</span>
-                <span className="font-mono text-base font-semibold text-ink">
+                <span className="font-mono text-base font-semibold text-cocoa">
                   {subtotal.toFixed(0)} {currency}
                 </span>
               </div>
-              <Button size="lg" className="w-full" onClick={onCheckout}>
+              <Button variant="gold" size="lg" className="w-full" onClick={onCheckout}>
                 Оформить заказ
               </Button>
             </div>

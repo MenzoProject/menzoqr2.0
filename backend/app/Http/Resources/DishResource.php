@@ -22,6 +22,7 @@ final class DishResource extends JsonResource
             "image_url" => $this->image_path ? Storage::disk("public")->url($this->image_path) : null,
             "is_active" => $this->is_active,
             "is_available" => $this->is_available,
+            "is_popular" => $this->is_popular,
             "tags" => array_map(
                 static fn (string $tag): array => [
                     "value" => $tag,
